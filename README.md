@@ -1,5 +1,4 @@
 MooTools Color
 ==============
 
-The new Iteration of Color.js for MooTools.
-This file works with MooTools 1.2.1
+Color.js ported from 2.o to stand-alone js. Requires a browser with Array.prototype.map support.
