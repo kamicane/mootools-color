@@ -1,0 +1,20 @@
+name: Color
+
+web: [mad4milk.net](http://mad4milk.net)
+
+description: Colors for everyone
+
+authors: [Valerio Proietti](http://mad4milk.net)
+
+license: [MIT License](http://mootools.net/license.txt)
+
+copyright: &copy; [Valerio Proietti](http://mad4milk.net)
+
+author: kamicane
+
+category: Types
+
+tags: [color, niceness, colorful, happyness]
+
+sources:
+  - "Source/Color.js"
