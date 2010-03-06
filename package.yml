@@ -1,14 +1,14 @@
 name: Color
 
-web: [mad4milk.net](http://mad4milk.net)
+web: "[mad4milk.net](http://mad4milk.net)"
 
 description: Colors for everyone
 
-authors: [Valerio Proietti](http://mad4milk.net)
+authors: "[Valerio Proietti](http://mad4milk.net)"
 
-license: [MIT License](http://mootools.net/license.txt)
+license: "[MIT License](http://mootools.net/license.txt)"
 
-copyright: &copy; [Valerio Proietti](http://mad4milk.net)
+copyright: "&copy; [Valerio Proietti](http://mad4milk.net)"
 
 author: kamicane
 
@@ -18,3 +18,4 @@ tags: [color, niceness, colorful, happyness]
 
 sources:
   - "Source/Color.js"
+  
