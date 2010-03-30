@@ -14,7 +14,7 @@ author: kamicane
 
 category: Types
 
-tags: [color, niceness, colorful, happyness]
+tags: [color, parsers]
 
 sources:
   - "Source/Color.js"
