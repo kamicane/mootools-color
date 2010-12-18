@@ -1,0 +1,195 @@
+describe('Keyword Color Parsing', function(){
+	beforeEach(function() {
+	  this.addMatchers({
+		toRoughlyEqual: function(expected){
+			return isNaN(this.actual) == isNaN(expected) && Math.abs(expected - this.actual) <= 2;
+		}
+	  });
+	});
+    function expectEqualColors(c, c2){
+        expect(c.red).toRoughlyEqual(c2.red);
+        expect(c.green).toRoughlyEqual(c2.green);
+        expect(c.blue).toRoughlyEqual(c2.blue);
+        expect(c.alpha).toEqual(c2.alpha);
+    }
+    function equalColors(){
+        var colors = Array.prototype.slice.call(arguments);
+        it('should parse the colors ' + colors.join(', ') + ' as equivalents', function(){
+            var c = new Color(colors[0]);
+            for (var i = 1, l = colors.length; i < l; i++){
+                expectEqualColors(c, new Color(colors[i]));
+            }
+        });
+        it('should parse the color ' + colors[0] + ' equivalently after being serialized as HEX', function(){
+            var c = new Color(colors[0]);
+            expectEqualColors(c, new Color(c.toHEX()));
+        });
+        it('should parse the color ' + colors[0] + ' equivalently after being serialized as RGB', function(){
+            var c = new Color(colors[0]);
+            expectEqualColors(c, new Color(c.toRGB()));
+        });
+        it('should parse the color ' + colors[0] + ' equivalently after being serialized as HSB', function(){
+            var c = new Color(colors[0]);
+            expectEqualColors(c, new Color(c.toHSB()));
+        });
+        it('should parse the color ' + colors[0] + ' equivalently after being serialized as HSL', function(){
+            var c = new Color(colors[0]);
+            expectEqualColors(c, new Color(c.toHSL()));
+        });
+    }
+    function xequalColors(){
+        var colors = Array.prototype.slice.call(arguments);
+        xit('should parse the colors ' + colors.join(', ') + ' as equivalents');
+        xit('should parse the color ' + colors[0] + ' equivalently after being serialized as HEX');
+        xit('should parse the color ' + colors[0] + ' equivalently after being serialized as RGB');
+        xit('should parse the color ' + colors[0] + ' equivalently after being serialized as HSB');
+        xit('should parse the color ' + colors[0] + ' equivalently after being serialized as HSL');
+    }
+    xequalColors('aliceblue', '#f0f8ff');
+    xequalColors('antiquewhite', '#faebd7');
+    equalColors('aqua', '#00ffff');
+    xequalColors('aquamarine', '#7fffd4');
+    xequalColors('azure', '#f0ffff');
+    xequalColors('beige', '#f5f5dc');
+    xequalColors('bisque', '#ffe4c4');
+    equalColors('black', '#000000');
+    xequalColors('blanchedalmond', '#ffebcd');
+    equalColors('blue', '#0000ff');
+    xequalColors('blueviolet', '#8a2be2');
+    xequalColors('brown', '#a52a2a');
+    xequalColors('burlywood', '#deb887');
+    xequalColors('cadetblue', '#5f9ea0');
+    xequalColors('chartreuse', '#7fff00');
+    xequalColors('chocolate', '#d2691e');
+    xequalColors('coral', '#ff7f50');
+    xequalColors('cornflowerblue', '#6495ed');
+    xequalColors('cornsilk', '#fff8dc');
+    xequalColors('crimson', '#dc143c');
+    xequalColors('cyan', '#00ffff');
+    xequalColors('darkblue', '#00008b');
+    xequalColors('darkcyan', '#008b8b');
+    xequalColors('darkgoldenrod', '#b8860b');
+    xequalColors('darkgray', '#a9a9a9');
+    xequalColors('darkgreen', '#006400');
+    xequalColors('darkgrey', '#a9a9a9');
+    xequalColors('darkkhaki', '#bdb76b');
+    xequalColors('darkmagenta', '#8b008b');
+    xequalColors('darkolivegreen', '#556b2f');
+    xequalColors('darkorange', '#ff8c00');
+    xequalColors('darkorchid', '#9932cc');
+    xequalColors('darkred', '#8b0000');
+    xequalColors('darksalmon', '#e9967a');
+    xequalColors('darkseagreen', '#8fbc8f');
+    xequalColors('darkslateblue', '#483d8b');
+    xequalColors('darkslategray', '#2f4f4f');
+    xequalColors('darkslategrey', '#2f4f4f');
+    xequalColors('darkturquoise', '#00ced1');
+    xequalColors('darkviolet', '#9400d3');
+    xequalColors('deeppink', '#ff1493');
+    xequalColors('deepskyblue', '#00bfff');
+    xequalColors('dimgray', '#696969');
+    xequalColors('dimgrey', '#696969');
+    xequalColors('dodgerblue', '#1e90ff');
+    xequalColors('firebrick', '#b22222');
+    xequalColors('floralwhite', '#fffaf0');
+    xequalColors('forestgreen', '#228b22');
+    equalColors('fuchsia', '#ff00ff');
+    xequalColors('gainsboro', '#dcdcdc');
+    xequalColors('ghostwhite', '#f8f8ff');
+    xequalColors('gold', '#ffd700');
+    xequalColors('goldenrod', '#daa520');
+    equalColors('gray', '#808080');
+    equalColors('green', '#008000');
+    xequalColors('greenyellow', '#adff2f');
+    xequalColors('grey', '#808080');
+    xequalColors('honeydew', '#f0fff0');
+    xequalColors('hotpink', '#ff69b4');
+    xequalColors('indianred', '#cd5c5c');
+    xequalColors('indigo', '#4b0082');
+    xequalColors('ivory', '#fffff0');
+    xequalColors('khaki', '#f0e68c');
+    xequalColors('lavender', '#e6e6fa');
+    xequalColors('lavenderblush', '#fff0f5');
+    xequalColors('lawngreen', '#7cfc00');
+    xequalColors('lemonchiffon', '#fffacd');
+    xequalColors('lightblue', '#add8e6');
+    xequalColors('lightcoral', '#f08080');
+    xequalColors('lightcyan', '#e0ffff');
+    xequalColors('lightgoldenrodyellow', '#fafad2');
+    xequalColors('lightgray', '#d3d3d3');
+    xequalColors('lightgreen', '#90ee90');
+    xequalColors('lightgrey', '#d3d3d3');
+    xequalColors('lightpink', '#ffb6c1');
+    xequalColors('lightsalmon', '#ffa07a');
+    xequalColors('lightseagreen', '#20b2aa');
+    xequalColors('lightskyblue', '#87cefa');
+    xequalColors('lightslategray', '#778899');
+    xequalColors('lightslategrey', '#778899');
+    xequalColors('lightsteelblue', '#b0c4de');
+    xequalColors('lightyellow', '#ffffe0');
+    equalColors('lime', '#00ff00');
+    xequalColors('limegreen', '#32cd32');
+    xequalColors('linen', '#faf0e6');
+    xequalColors('magenta', '#ff00ff');
+    equalColors('maroon', '#800000');
+    xequalColors('mediumaquamarine', '#66cdaa');
+    xequalColors('mediumblue', '#0000cd');
+    xequalColors('mediumorchid', '#ba55d3');
+    xequalColors('mediumpurple', '#9370db');
+    xequalColors('mediumseagreen', '#3cb371');
+    xequalColors('mediumslateblue', '#7b68ee');
+    xequalColors('mediumspringgreen', '#00fa9a');
+    xequalColors('mediumturquoise', '#48d1cc');
+    xequalColors('mediumvioletred', '#c71585');
+    xequalColors('midnightblue', '#191970');
+    xequalColors('mintcream', '#f5fffa');
+    xequalColors('mistyrose', '#ffe4e1');
+    xequalColors('moccasin', '#ffe4b5');
+    xequalColors('navajowhite', '#ffdead');
+    equalColors('navy', '#000080');
+    xequalColors('oldlace', '#fdf5e6');
+    equalColors('olive', '#808000');
+    xequalColors('olivedrab', '#6b8e23');
+    equalColors('orange', '#ffa500');
+    xequalColors('orangered', '#ff4500');
+    xequalColors('orchid', '#da70d6');
+    xequalColors('palegoldenrod', '#eee8aa');
+    xequalColors('palegreen', '#98fb98');
+    xequalColors('paleturquoise', '#afeeee');
+    xequalColors('palevioletred', '#db7093');
+    xequalColors('papayawhip', '#ffefd5');
+    xequalColors('peachpuff', '#ffdab9');
+    xequalColors('peru', '#cd853f');
+    xequalColors('pink', '#ffc0cb');
+    xequalColors('plum', '#dda0dd');
+    xequalColors('powderblue', '#b0e0e6');
+    equalColors('purple', '#800080');
+    equalColors('red', '#ff0000');
+    xequalColors('rosybrown', '#bc8f8f');
+    xequalColors('royalblue', '#4169e1');
+    xequalColors('saddlebrown', '#8b4513');
+    xequalColors('salmon', '#fa8072');
+    xequalColors('sandybrown', '#f4a460');
+    xequalColors('seagreen', '#2e8b57');
+    xequalColors('seashell', '#fff5ee');
+    xequalColors('sienna', '#a0522d');
+    equalColors('silver', '#c0c0c0');
+    xequalColors('skyblue', '#87ceeb');
+    xequalColors('slateblue', '#6a5acd');
+    xequalColors('slategray', '#708090');
+    xequalColors('slategrey', '#708090');
+    xequalColors('snow', '#fffafa');
+    xequalColors('springgreen', '#00ff7f');
+    xequalColors('steelblue', '#4682b4');
+    xequalColors('tan', '#d2b48c');
+    equalColors('teal', '#008080');
+    xequalColors('thistle', '#d8bfd8');
+    xequalColors('tomato', '#ff6347');
+    xequalColors('turquoise', '#40e0d0');
+    xequalColors('violet', '#ee82ee');
+    xequalColors('wheat', '#f5deb3');
+    equalColors('white', '#ffffff');
+    xequalColors('whitesmoke', '#f5f5f5');
+    equalColors('yellow', '#ffff00');
+    xequalColors('yellowgreen', '#9acd32');
+});
