@@ -34,7 +34,7 @@ var Color = this.Color = function(color, type){
 		}
 
 		switch (typeof color){
-			case 'string': if (!type) type = (type = color.match(/^rgb|^hsb/)) ? type[0] : 'hex'; break;
+			case 'string': if (!type) type = (type = color.match(/^rgb|^hsb|^hsl/)) ? type[0] : 'hex'; break;
 			case 'object': type = type || 'rgb'; color = color.toString(); break;
 			case 'number': type = 'hex'; color = color.toString(16); break;
 		}
@@ -54,11 +54,12 @@ var limit = function(number, min, max){
 	return Math.min(max, Math.max(min, number));
 };
 
-var listMatch = /([-.\d]+)\s*,\s*([-.\d]+)\s*,\s*([-.\d]+)\s*,?\s*([-.\d]*)/;
+var listMatch = /([-.\d]+\%?)\s*,\s*([-.\d]+\%?)\s*,\s*([-.\d]+\%?)\s*,?\s*([-.\d]*\%?)/;
 var hexMatch = /^#?([a-f0-9]{1,2})([a-f0-9]{1,2})([a-f0-9]{1,2})([a-f0-9]{0,2})$/i;
 
 Color.parseRGB = function(color){
 	return color.match(listMatch).slice(1).map(function(bit, i){
+		if (bit) bit = parseFloat(bit) * (bit[bit.length - 1] == '%' ? 2.55 : 1);
 		return (i < 3) ? Math.round(((bit %= 256) < 0) ? bit + 256 : bit) : limit(((bit === '') ? 1 : Number(bit)), 0, 1);
 	});
 };
@@ -73,6 +74,7 @@ Color.parseHEX = function(color){
 	
 Color.parseHSB = function(color){
 	var hsb = color.match(listMatch).slice(1).map(function(bit, i){
+		if (bit) bit = parseFloat(bit);
 		if (i === 0) return Math.round(((bit %= 360) < 0) ? (bit + 360) : bit);
 		else if (i < 3) return limit(Math.round(bit), 0, 100);
 		else return limit(((bit === '') ? 1 : Number(bit)), 0, 1);
@@ -98,6 +100,37 @@ Color.parseHSB = function(color){
 	}
 };
 
+Color.parseHSL = function(color){
+	var hsb = color.match(listMatch).slice(1).map(function(bit, i){
+		if (bit) bit = parseFloat(bit);
+		if (i === 0) return Math.round(((bit %= 360) < 0) ? (bit + 360) : bit);
+		else if (i < 3) return limit(Math.round(bit), 0, 100);
+		else return limit(((bit === '') ? 1 : Number(bit)), 0, 1);
+	});
+
+	var h = hsb[0] / 60;
+	var s = hsb[1] / 100;
+	var l = hsb[2] / 100;
+	var a = hsb[3];
+	
+	var c = (1 - Math.abs(2 * l - 1)) * s;
+	var x = c * (1 - Math.abs(h % 2 - 1));
+	var m = l - c / 2;
+	
+	var p = Math.round((c + m) * 255);
+	var q = Math.round((x + m) * 255);
+	var t = Math.round((m) * 255);
+
+	switch (Math.floor(h)){
+		case 0: return [p, q, t, a];
+		case 1: return [q, p, t, a];
+		case 2: return [t, p, q, a];
+		case 3: return [t, q, p, a];
+		case 4: return [q, t, p, a];
+		default: return [p, t, q, a];
+	}
+};
+
 var toString = function(type, array){
 	if (array[3] != 1) type += 'a';
 	else array.pop();
@@ -110,7 +143,7 @@ Color.prototype = {
 		var red = this.red, green = this.green, blue = this.blue, alpha = this.alpha;
 
 		var max = Math.max(red, green, blue), min = Math.min(red, green, blue), delta = max - min;
-		var hue = 0, saturation = (max != 0) ? delta / max : 0, brightness = max / 255;
+		var hue = 0, saturation = (delta != 0) ? delta / max : 0, brightness = max / 255;
 		if (saturation){
 			var rr = (max - red) / delta, gr = (max - green) / delta, br = (max - blue) / delta;
 			hue = (red == max) ? br - gr : (green == max) ? 2 + rr - br : 4 + gr - rr;
@@ -120,6 +153,22 @@ Color.prototype = {
 		var hsb = [Math.round(hue * 360), Math.round(saturation * 100), Math.round(brightness * 100), alpha];
 
 		return (array) ? hsb : toString('hsb', hsb);
+	},
+
+	toHSL: function(array){
+		var red = this.red, green = this.green, blue = this.blue, alpha = this.alpha;
+
+		var max = Math.max(red, green, blue), min = Math.min(red, green, blue), delta = max - min;
+		var hue = 0, saturation = (delta != 0) ? delta / (255 - Math.abs((max + min) - 255)) : 0, lightness = (max + min) / 512;
+		if (saturation){
+			var rr = (max - red) / delta, gr = (max - green) / delta, br = (max - blue) / delta;
+			hue = (red == max) ? br - gr : (green == max) ? 2 + rr - br : 4 + gr - rr;
+			if ((hue /= 6) < 0) hue++;
+		}
+
+		var hsl = [Math.round(hue * 360), Math.round(saturation * 100), Math.round(lightness * 100), alpha];
+
+		return (array) ? hsl : toString('hsl', hsl);
 	},
 
 	toHEX: function(array){
@@ -155,6 +204,12 @@ Color.hsb = function(h, s, b, a){
 };
 
 if (this.hsb == null) this.hsb = Color.hsb;
+
+Color.hsl = function(h, s, l, a){
+	return new Color([h || 0, s || 0, l || 0, (a == null) ? 1 : a], 'hsl');
+};
+
+if (this.hsl == null) this.hsl = Color.hsl;
 
 Color.rgb = function(r, g, b, a){
 	return new Color([r || 0, g || 0, b || 0, (a == null) ? 1 : a], 'rgb');

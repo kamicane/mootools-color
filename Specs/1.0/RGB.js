@@ -1,8 +1,9 @@
 describe('RGB Color Parsing', function(){
+	var acceptableDiff = 3;
 	beforeEach(function() {
 	  this.addMatchers({
 		toRoughlyEqual: function(expected){
-			return isNaN(this.actual) == isNaN(expected) && Math.abs(expected - this.actual) <= 2;
+			return isNaN(this.actual) == isNaN(expected) && Math.abs(expected - this.actual) <= acceptableDiff;
 		}
 	  });
 	});
